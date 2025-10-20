@@ -22,8 +22,10 @@ async function fetchGoogleSheetData() {
             tableBody.appendChild(row);
         }*/
 
-        console.log('Data', data)
-        console.log('Rows', rows)
+        document.querySelector('.log-data').addEventListener('click', e => {
+            console.log('Data', data)
+            console.log('Rows', rows)
+        });
 
     } catch (error) {
         console.error('Error fetching Google Sheets data:', error);
