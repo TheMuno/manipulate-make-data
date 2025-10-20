@@ -31,5 +31,6 @@ async function fetchGoogleSheetData() {
 }
 
 document.querySelector('.log-data').addEventListener('click', e => {
+    console.log('Loading...')
     fetchGoogleSheetData(); 
 });  
