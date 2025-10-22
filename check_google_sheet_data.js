@@ -102,20 +102,22 @@ function checkForCapacityOnDatePickerClose(dateArr) {
 
     let firstDaySet = false;
 
-    for (const day of daysData) {
+    // for (const day of daysData) {
+    daysData.forEach(day => {
         const { available } = day;
-        if (!available || available.toLowerCase() !== 'true') continue;
-        const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
+        if (available && available.toLowerCase() === 'true') {
+            const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
 
-        if (firstDaySet === false) {
-            $firstAvailableDate.textContent = date;
-            $firstAvailableDateCapacity.textContent = capacity;
-            $firstAvailableDateBooked.textContent = booked;
-            firstDaySet = true;
+            if (firstDaySet === false) {
+                $firstAvailableDate.textContent = date;
+                $firstAvailableDateCapacity.textContent = capacity;
+                $firstAvailableDateBooked.textContent = booked;
+                firstDaySet = true;
+            }
+
+            $dateOpeningsTextArea.value = `${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
         }
-
-        $dateOpeningsTextArea.value = `${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
-    }
+    });
 }
 
 function processArrivalDate(dateArr) {

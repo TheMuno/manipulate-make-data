@@ -38,6 +38,10 @@
             font-size: 1.3rem; 
         }
 
+        .order-wrap {
+            margin-top: 10px;
+        }
+
         .rush-order-alert {
             font-style: italic;
         }
@@ -66,10 +70,10 @@
         <div class="result-wrap">
             <div class="wrap-div"><label for="date-created">Date Created:</label><span class="result-span date-created"></span></div>
             <div class="wrap-div"><label for="arrival-date">Arrival Date:</label><span class="result-span arrival-date"></span></div> 
-            <div class="rush-order-wrap hide">
+            <div class="order-wrap rush-order-wrap hide">
                 <div class="rush-order-alert">This is a rush order<br>Needs to be delivered in 3 weeks or less!</div>
             </div>
-            <div class="normal-order-wrap hide">
+            <div class="order-wrap normal-order-wrap hide">
                 <div class="wrap-div">
                     <label for="last-viable-date">Last Viable Date:</label>
                     <span class="result-span last-viable-date"></span>
