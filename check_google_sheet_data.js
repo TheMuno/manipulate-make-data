@@ -1,43 +1,60 @@
 const spreadsheetId = '1Ef5djoE68lL_qn_Qk7PlRB676UdF-zLF43aerF4A5mE';
 const apiKey = 'AIzaSyDQpFatuEeQMlVkMK8y4BjhVMH0dexgKeU';
-const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Sheet1?key=${apiKey}`;
+const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Sheet1!A1:F100?key=${apiKey}`;
 
-async function fetchGoogleSheetData() {
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        const rows = data.values;
-        /*const tableBody = document.querySelector('#data-table tbody');
+async function getSheetData() {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-        for (let i = 1; i < rows.length; i++) {
-            const row = document.createElement('tr');
-            
-            rows[i].forEach(cell => {
-                const cellElement = document.createElement('td');
-                cellElement.textContent = cell;
-                row.appendChild(cellElement);
-            });
-            
-            tableBody.appendChild(row);
-        }*/
+    const rows = data.values || [];
 
-        console.log('Data', data)
-        console.log('Rows', rows)
-
-    } catch (error) {
-        console.error('Error fetching Google Sheets data:', error);
+    if (rows.length < 2) {
+      console.warn("Not enough data rows found");
+      return [];
     }
+
+    // 1️⃣ Extract header row
+    const [header, ...bodyRows] = rows;
+
+    // 2️⃣ Filter out empty rows
+    const filteredRows = bodyRows.filter(row =>
+      row.some(cell => cell && cell.toString().trim() !== "")
+    );
+
+    // 3️⃣ Map rows to objects using headers as keys
+    const structuredData = filteredRows.map(row => {
+      const entry = {};
+      header.forEach((key, index) => {
+        entry[key] = row[index] || ""; // fallback to empty string if cell is missing
+      });
+      return entry;
+    });
+
+    console.log("Structured Data:", structuredData);
+    return structuredData;
+
+  } catch (error) {
+    console.error("Error fetching Google Sheets data:", error);
+    return [];
+  }
 }
+
 
 document.querySelector('.log-data').addEventListener('click', e => {
     console.log('Loading...')
-    fetchGoogleSheetData(); 
+    getSheetData(); 
 });  
 
 const $dateCreated = document.querySelector('.date-created');
 const $arrivalDate = document.querySelector('.arrival-date');
 const $datePickerField = document.querySelector('.date');
+const $rushOrderWrap = document.querySelector('.rush-order-wrap');
+const $normalOrderWrap = document.querySelector('.normal-order-wrap');
+const $lastViableDate = document.querySelector('.last-viable-date');
+const today = new Date();
+const rushOrderWeeks = 3;
+const lowerLimitDaysNum = 10;
 
 const fp = flatpickr($datePickerField, {
     mode: 'range',
@@ -53,12 +70,56 @@ const fp = flatpickr($datePickerField, {
 });
 
 function checkForCapacityOnDatePickerClose(dateArr) {
-    const today = new Date();
+    const arrivalDate = processArrivalDate(dateArr);
     $dateCreated.textContent = today.toDateString();
-    $arrivalDate.textContent = processArrivalDate(dateArr);
+    $arrivalDate.textContent = arrivalDate;
+
+    const { weeks } = getDaysNWeeksFromToday(arrivalDate);
+    if (weeks <= rushOrderWeeks) {
+        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = 'This is a rush order<br>Needs to be delivered in 3 weeks or less!';
+        $rushOrderWrap.classList.remove('hide');
+        $normalOrderWrap.classList.add('hide');
+        return; 
+    }
+
+    const lastViableDateToStartWork  = getLowerLimitDate(arrivalDate, lowerLimitDaysNum);
+    const numberOfDaysAvailableToWork = getNumberOfDaysBetweenDates(today, lastViableDateToStartWork);
+    if (numberOfDaysAvailableToWork < 1) {
+        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = 'No more available days!';
+        $rushOrderWrap.classList.remove('hide');
+        $normalOrderWrap.classList.add('hide');
+        return;
+    }
+    
+    
+    $lastViableDate.textContent = lastViableDateToStartWork;
+    const sheetData = getSheetData();
+    
 }
 
 function processArrivalDate(dateArr) {
     const date = dateArr[0];
-    return new Date(date).toDateString();
+    return new Date(date)?.toDateString() || 'No Date';
 }  
+
+function getDaysNWeeksFromToday(futureDate) {
+  const today = new Date();
+  const days = getNumberOfDaysBetweenDates(today, futureDate); 
+  const weeks = Math.round(days / 7); 
+  return { days, weeks }; 
+}
+
+function getLowerLimitDate(theArrivalDate, lowerLimit) {
+  const arrivalDate = new Date(theArrivalDate); 
+  const lowerLimitDate = arrivalDate.setDate(arrivalDate.getDate() - lowerLimit);
+  return new Date(lowerLimitDate);
+}
+
+function getNumberOfDaysBetweenDates(fromDate, toDate) {
+  const fromDateTime = new Date(fromDate).getTime();
+  const toDateTime = new Date(toDate).getTime();
+  const oneDayMilliseconds = 1000 * 60 * 60 * 24;
+  const days = Math.ceil( ( toDateTime - fromDateTime  ) / oneDayMilliseconds ); 
+  return days;
+}
+

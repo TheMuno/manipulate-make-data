@@ -38,6 +38,15 @@
             font-size: 1.3rem; 
         }
 
+        .rush-order-alert {
+            font-style: italic;
+        }
+
+        .normal-order-wrap.hide, 
+        .rush-order-wrap.hide {
+            display: none;
+         }
+
         .log-data {
             width: 340px;
             height: 50px;
@@ -55,12 +64,19 @@
     <div class="main">
         <input class="date" type="text" placeholder="Add Arrival Date...">
         <div class="result-wrap">
-            <div class="wrap-div date-created-wrap"><label for="date-created">Date Created:</label><span class="result-span date-created"></span></div>
-            <div class="wrap-div arrival-date-wrap"><label for="arrival-date">Arrival Date:</label><span class="result-span arrival-date"></span></div> 
+            <div class="wrap-div"><label for="date-created">Date Created:</label><span class="result-span date-created"></span></div>
+            <div class="wrap-div"><label for="arrival-date">Arrival Date:</label><span class="result-span arrival-date"></span></div> 
+            <div class="rush-order-wrap hide">
+                <div class="rush-order-alert">This is a rush order<br>Needs to be delivered in 3 weeks or less!</div>
+            </div>
+            <div class="normal-order-wrap hide">
+                <div class="wrap-div"><label for="last-viable-date">Last Viable Date:</label><span class="result-span last-viable-date"></span></div> 
+                <textarea name="date-openings" id="date-openings" class="date-openings"></textarea>
+            </div>
         </div>
     </div>
     <div class="log-data">Log Data</div>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="check_google_sheet_data.js"></script>
 </body>
-</html> 
+</html>   
