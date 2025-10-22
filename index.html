@@ -20,6 +20,10 @@
             width: 30%;
         }
 
+        .wrap-div {
+            margin-bottom: 2px; 
+        }
+
         .result-wrap {
             margin-top: 20px;
             font-size: 1.4rem;
@@ -27,6 +31,11 @@
 
         label {
             font-style: italic;
+            margin-right: 10px; 
+        }
+
+        span {
+            font-size: 1.3rem; 
         }
 
         .log-data {
@@ -46,8 +55,8 @@
     <div class="main">
         <input class="date" type="text" placeholder="Add Arrival Date...">
         <div class="result-wrap">
-            <div class="date-created-wrap"><label for="date-created">Date Created:</label><span class="date-created"></span></div>
-            <div class="arrival-date-wrap"><label for="arrival-date">Arrival Date:</label><span class="arrival-date"></span></div> 
+            <div class="wrap-div date-created-wrap"><label for="date-created">Date Created:</label><span class="date-created"></span></div>
+            <div class="wrap-div arrival-date-wrap"><label for="arrival-date">Arrival Date:</label><span class="arrival-date"></span></div> 
         </div>
     </div>
     <div class="log-data">Log Data</div>
