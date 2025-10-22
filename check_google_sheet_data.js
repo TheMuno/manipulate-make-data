@@ -99,6 +99,7 @@ function checkForCapacityOnDatePickerClose(dateArr) {
     
     $lastViableDate.textContent = lastViableDateToStartWork;
     const daysData = getSheetData();
+    console.log('daysData::::', daysData)
 
     let firstDaySet = false;
 
