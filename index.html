@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Sheet Data</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .log-data {
             width: 340px;
@@ -20,9 +21,14 @@
 </head>
 <body>
     <div class="main">
-        <input class="date" type="text" placeholder="Add Date...">
+        <input class="date" type="text" placeholder="Add Arrival Date...">
+        <div class="result-wrap">
+            <div class="date-created"></div>
+            <div class="arrival-date"></div>
+        </div>
     </div>
     <div class="log-data">Log Data</div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="check_google_sheet_data.js"></script>
 </body>
 </html> 
