@@ -68,7 +68,7 @@ const fp = flatpickr($datePickerField, {
     enableTime: false,
     altFormat: 'D M j',
     dateFormat: 'Y-m-d',
-  	minDate: 'today',
+  	// minDate: 'today',
     onClose: (selectedDates, dateStr, instance) => {
         if (selectedDates.length === 0) return;
         checkForCapacityOnDatePickerClose(selectedDates);         
