@@ -42,7 +42,7 @@ async function getSheetData() {
 
 
 document.querySelector('.log-data').addEventListener('click', e => {
-    console.log('Loading...')
+    console.log('It is Loading...')
     getSheetData(); 
 });  
 
@@ -94,7 +94,7 @@ function checkForCapacityOnDatePickerClose(dateArr) {
     
     $lastViableDate.textContent = lastViableDateToStartWork;
     const sheetData = getSheetData();
-    
+
 }
 
 function processArrivalDate(dateArr) {
