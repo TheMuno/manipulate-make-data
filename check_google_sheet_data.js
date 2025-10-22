@@ -34,3 +34,18 @@ document.querySelector('.log-data').addEventListener('click', e => {
     console.log('Loading...')
     fetchGoogleSheetData(); 
 });  
+
+const $date = document.querySelector('.date');
+
+const fp = flatpickr($date, {
+    mode: 'range',
+    altInput: true,
+    enableTime: false,
+    altFormat: 'D M j',
+    dateFormat: 'Y-m-d',
+  	minDate: 'today',
+    onClose: (selectedDates, dateStr, instance) => {
+        // processDatePickrUserChoice(selectedDates, dateStr);         
+    },
+});
+
