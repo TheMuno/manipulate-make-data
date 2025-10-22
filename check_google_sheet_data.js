@@ -74,7 +74,7 @@ const fp = flatpickr($datePickerField, {
     },
 });
 
-function checkForCapacityOnDatePickerClose(dateArr) {
+async function checkForCapacityOnDatePickerClose(dateArr) {
     const arrivalDate = processArrivalDate(dateArr);
     $dateCreated.textContent = today.toDateString();
     $arrivalDate.textContent = arrivalDate;
@@ -98,27 +98,24 @@ function checkForCapacityOnDatePickerClose(dateArr) {
     
     
     $lastViableDate.textContent = lastViableDateToStartWork;
-    const daysData = getSheetData();
-    console.log('daysData::::', daysData)
+    const daysData = await getSheetData();
 
     let firstDaySet = false;
 
-    // for (const day of daysData) {
-    daysData.forEach(day => {
+    for (const day of daysData) {
         const { available } = day;
-        if (available && available.toLowerCase() === 'true') {
-            const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
+        if (!available || available.toLowerCase() !== 'true') continue;
+        const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
 
-            if (firstDaySet === false) {
-                $firstAvailableDate.textContent = date;
-                $firstAvailableDateCapacity.textContent = capacity;
-                $firstAvailableDateBooked.textContent = booked;
-                firstDaySet = true;
-            }
-
-            $dateOpeningsTextArea.value = `${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
+        if (firstDaySet === false) {
+            $firstAvailableDate.textContent = date;
+            $firstAvailableDateCapacity.textContent = capacity;
+            $firstAvailableDateBooked.textContent = booked;
+            firstDaySet = true;
         }
-    });
+
+        $dateOpeningsTextArea.value = `${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
+    }
 }
 
 function processArrivalDate(dateArr) {
