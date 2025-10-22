@@ -35,9 +35,11 @@ document.querySelector('.log-data').addEventListener('click', e => {
     fetchGoogleSheetData(); 
 });  
 
-const $date = document.querySelector('.date');
+const $dateCreated = document.querySelector('.arrival-date');
+const $arrivalDate = document.querySelector('.arrival-date');
+const $datePickerField = document.querySelector('.date');
 
-const fp = flatpickr($date, {
+const fp = flatpickr($datePickerField, {
     mode: 'range',
     altInput: true,
     enableTime: false,
@@ -45,7 +47,13 @@ const fp = flatpickr($date, {
     dateFormat: 'Y-m-d',
   	minDate: 'today',
     onClose: (selectedDates, dateStr, instance) => {
-        // processDatePickrUserChoice(selectedDates, dateStr);         
+        checkForCapacityOnDatePickerClose(dateStr);         
     },
 });
+
+function checkForCapacityOnDatePickerClose(dateStr) {
+    const today = new Date();
+    $dateCreated.textContent = today.toDateString();
+    $arrivalDate.textContent = dateStr;
+}
 
