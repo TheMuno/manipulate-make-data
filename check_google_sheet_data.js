@@ -96,6 +96,8 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
         return;
     }
     
+    $normalOrderWrap.classList.remove('hide');
+    $rushOrderWrap.classList.add('hide');
     
     $lastViableDate.textContent = lastViableDateToStartWork;
     const daysData = await getSheetData();
