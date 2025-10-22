@@ -49,7 +49,13 @@
         .normal-order-wrap.hide, 
         .rush-order-wrap.hide {
             display: none;
-         }
+        }
+
+        textarea.date-openings {
+            height: 300px;
+            width: 300px;
+            margin-top: 10px;
+        }
 
         .log-data {
             width: 340px;
@@ -83,12 +89,16 @@
                     <span class="result-span first-available-date"></span>
                 </div> 
                 <div class="wrap-div">
-                    <label for="first-available-date-capacity">First Available Date Capacity:</label>
+                    <label for="first-available-date-capacity">First Available Date's Capacity:</label>
                     <span class="result-span first-available-date-capacity"></span>
                 </div> 
                 <div class="wrap-div">
-                    <label for="first-available-date-booked">First Available Date Booked:</label>
+                    <label for="first-available-date-booked">First Available Date's Booked:</label>
                     <span class="result-span first-available-date-booked"></span>
+                </div> 
+                <div class="wrap-div">
+                    <label for="first-available-date-tasks-no">First Available Date's Tasks:</label>
+                    <span class="result-span first-available-date-tasks-no"></span>
                 </div> 
                 <textarea name="date-openings" id="date-openings" class="date-openings"></textarea>
             </div>

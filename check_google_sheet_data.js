@@ -56,6 +56,7 @@ const $lastViableDate = document.querySelector('.last-viable-date');
 const $firstAvailableDate = document.querySelector('.first-available-date'); 
 const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
 const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
+const $firstAvailableDateTasks = document.querySelector('.first-available-date-tasks-no');
 const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
@@ -102,13 +103,14 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     $lastViableDate.textContent = lastViableDateToStartWork;
     const daysData = await getSheetData();
 
+    // const numberOfDays = getNumberOfDaysBetweenDates(arrivalDate, lastViableDateToStartWork);
+
     let firstDaySet = false;
 
     for (const day of daysData) {
+    // for (let i = 0; i < numberOfDays; i++) {
         const { available } = day;
         if (!available || available.toLowerCase() !== 'true') continue;
-
-        console.log('Day:', day)
 
         const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
 
@@ -116,11 +118,11 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
             $firstAvailableDate.textContent = date;
             $firstAvailableDateCapacity.textContent = capacity;
             $firstAvailableDateBooked.textContent = booked;
+            $firstAvailableDateTasks.textContent = noOfTasks;
             firstDaySet = true;
         }
 
         $dateOpeningsTextArea.value = $dateOpeningsTextArea.value + '\n' + date; 
-        //`${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
     }
 }
 
@@ -140,6 +142,14 @@ function getLowerLimitDate(theArrivalDate, lowerLimit) {
   const arrivalDate = new Date(theArrivalDate); 
   const lowerLimitDate = arrivalDate.setDate(arrivalDate.getDate() - lowerLimit);
   return new Date(lowerLimitDate);
+}
+
+function getNumberOfDaysBetweenDates(fromDate, toDate) {
+  const fromDateTime = new Date(fromDate).getTime();
+  const toDateTime = new Date(toDate).getTime();
+  const oneDayMilliseconds = 1000 * 60 * 60 * 24;
+  const days = Math.ceil( ( toDateTime - fromDateTime  ) / oneDayMilliseconds ); 
+  return days;
 }
 
 function getNumberOfDaysBetweenDates(fromDate, toDate) {
