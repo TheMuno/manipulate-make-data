@@ -26,6 +26,7 @@ async function getSheetData() {
     const structuredData = filteredRows.map(row => {
       const entry = {};
       header.forEach((key, index) => {
+        key = key.toLowerCase();
         entry[key] = row[index] || ""; // fallback to empty string if cell is missing
       });
       return entry;
@@ -52,6 +53,10 @@ const $datePickerField = document.querySelector('.date');
 const $rushOrderWrap = document.querySelector('.rush-order-wrap');
 const $normalOrderWrap = document.querySelector('.normal-order-wrap');
 const $lastViableDate = document.querySelector('.last-viable-date');
+const $firstAvailableDate = document.querySelector('.first-available-date'); 
+const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
+const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
+const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
 const lowerLimitDaysNum = 10;
@@ -93,8 +98,24 @@ function checkForCapacityOnDatePickerClose(dateArr) {
     
     
     $lastViableDate.textContent = lastViableDateToStartWork;
-    const sheetData = getSheetData();
+    const daysData = getSheetData();
 
+    let firstDaySet = false;
+
+    for (const day of daysData) {
+        const { available } = day;
+        if (!available || available.toLowerCase() !== 'true') continue;
+        const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
+
+        if (firstDaySet === false) {
+            $firstAvailableDate.textContent = date;
+            $firstAvailableDateCapacity.textContent = capacity;
+            $firstAvailableDateBooked.textContent = booked;
+            firstDaySet = true;
+        }
+
+        $dateOpeningsTextArea.value = `${$dateOpeningsTextArea.value}\n${$dateOpeningsTextArea.value}`;
+    }
 }
 
 function processArrivalDate(dateArr) {
