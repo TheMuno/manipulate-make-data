@@ -53,6 +53,7 @@ const $datePickerField = document.querySelector('.date');
 const $rushOrderWrap = document.querySelector('.rush-order-wrap');
 const $normalOrderWrap = document.querySelector('.normal-order-wrap');
 const $lastViableDate = document.querySelector('.last-viable-date');
+const $dateRange = document.querySelector('.date-range');
 const $firstAvailableDate = document.querySelector('.first-available-date'); 
 const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
 const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
@@ -88,10 +89,10 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
         return; 
     }
 
-    const lastViableDateToStartWork  = getLowerLimitDate(arrivalDate, lowerLimitDaysNum);
+    const lastViableDateToStartWork  = getLowerLimitDate(arrivalDate, lowerLimitDaysNum);    
     const numberOfDaysAvailableToWork = getNumberOfDaysBetweenDates(today, lastViableDateToStartWork);
     if (numberOfDaysAvailableToWork < 1) {
-        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = 'No more available days!';
+        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = `No more available days!\nThe last viable date to start work is on ${lastViableDateToStartWork}`;
         $rushOrderWrap.classList.remove('hide');
         $normalOrderWrap.classList.add('hide');
         return;
@@ -101,18 +102,25 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     $rushOrderWrap.classList.add('hide');
     
     $lastViableDate.textContent = lastViableDateToStartWork;
+    const todayDate = today.getDate();
+    const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
+    $dateRange.textContent = `${tomorrow} to ${lastViableDateToStartWork}`;
+
     const daysData = await getSheetData();
 
     // const numberOfDays = getNumberOfDaysBetweenDates(arrivalDate, lastViableDateToStartWork);
 
     let firstDaySet = false;
+    const todayEpoch = today.getTime();
 
     for (const day of daysData) {
     // for (let i = 0; i < numberOfDays; i++) {
-        const { available } = day;
+        const { available, date } = day;
         if (!available || available.toLowerCase() !== 'true') continue;
+        const dateEpoch  = date.getTime();
+        if (todayEpoch > dateEpoch) continue;
 
-        const { booked, capacity, date, max, ['no. of tasks']:noOfTasks } = day;
+        const { booked, capacity, max, ['no. of tasks']:noOfTasks } = day;
 
         if (firstDaySet === false) {
             $firstAvailableDate.textContent = date;
