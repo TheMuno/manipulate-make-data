@@ -64,7 +64,7 @@ const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
 const lowerLimitDaysNum = 10;
-const minHrs = 6;
+const minHrs = 8;
 
 const fp = flatpickr($datePickerField, {
     mode: 'range',
