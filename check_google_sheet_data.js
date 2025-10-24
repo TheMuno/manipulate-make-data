@@ -55,6 +55,7 @@ const $normalOrderWrap = document.querySelector('.normal-order-wrap');
 const $lastViableDate = document.querySelector('.last-viable-date');
 const $dateRange = document.querySelector('.date-range');
 const $daysNum = document.querySelector('.days-num');
+const $minHrs = document.querySelector('.min-hrs');
 const $firstAvailableDate = document.querySelector('.first-available-date'); 
 const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
 const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
@@ -63,6 +64,7 @@ const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
 const lowerLimitDaysNum = 10;
+const minHrs = 6;
 
 const fp = flatpickr($datePickerField, {
     mode: 'range',
@@ -107,6 +109,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
     $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
     $daysNum.textContent = `${numberOfDaysAvailableToWork} days to delivery`;
+    $minHrs.textContent = minHrs;
 
     const daysData = await getSheetData();
 
