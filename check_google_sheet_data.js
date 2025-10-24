@@ -106,7 +106,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     const todayDate = today.getDate();
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
     $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
-    $daysNum.textContent = numberOfDaysAvailableToWork;
+    $daysNum.textContent = `${numberOfDaysAvailableToWork} days to delivery`;
 
     const daysData = await getSheetData();
 
