@@ -104,7 +104,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     $lastViableDate.textContent = lastViableDateToStartWork;
     const todayDate = today.getDate();
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
-    $dateRange.textContent = `${tomorrow} to ${lastViableDateToStartWork}`;
+    $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
 
     const daysData = await getSheetData();
 
@@ -117,7 +117,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     // for (let i = 0; i < numberOfDays; i++) {
         const { available, date } = day;
         if (!available || available.toLowerCase() !== 'true') continue;
-        const dateEpoch  = date.getTime();
+        const dateEpoch  = new Date(date).getTime();
         if (todayEpoch > dateEpoch) continue;
 
         const { booked, capacity, max, ['no. of tasks']:noOfTasks } = day;
