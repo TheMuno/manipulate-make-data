@@ -54,6 +54,7 @@ const $rushOrderWrap = document.querySelector('.rush-order-wrap');
 const $normalOrderWrap = document.querySelector('.normal-order-wrap');
 const $lastViableDate = document.querySelector('.last-viable-date');
 const $dateRange = document.querySelector('.date-range');
+const $daysNum = document.querySelector('.days-num');
 const $firstAvailableDate = document.querySelector('.first-available-date'); 
 const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
 const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
@@ -105,6 +106,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     const todayDate = today.getDate();
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
     $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
+    $daysNum.textContent = numberOfDaysAvailableToWork;
 
     const daysData = await getSheetData();
 
