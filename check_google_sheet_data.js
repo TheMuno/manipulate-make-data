@@ -132,7 +132,8 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
             firstDaySet = true;
         }
 
-        $dateOpeningsTextArea.value = $dateOpeningsTextArea.value + '\n' + date; 
+        const dayInfo = `${date} ${capacity} capacity ${booked} booked ${noOfTasks} tasks`;
+        $dateOpeningsTextArea.value = $dateOpeningsTextArea.value + '\n' + dayInfo; 
     }
 }
 
