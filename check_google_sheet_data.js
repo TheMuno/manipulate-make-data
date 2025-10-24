@@ -92,7 +92,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     const lastViableDateToStartWork  = getLowerLimitDate(arrivalDate, lowerLimitDaysNum);    
     const numberOfDaysAvailableToWork = getNumberOfDaysBetweenDates(today, lastViableDateToStartWork);
     if (numberOfDaysAvailableToWork < 1) {
-        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = `No more available days!\nThe last viable date to start work is on ${lastViableDateToStartWork}`;
+        $rushOrderWrap.querySelector('.rush-order-alert').innerHTML = `No more available days!\nThe last viable date to start work is on ${lastViableDateToStartWork.toDateString()}`;
         $rushOrderWrap.classList.remove('hide');
         $normalOrderWrap.classList.add('hide');
         return;
@@ -101,7 +101,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     $normalOrderWrap.classList.remove('hide');
     $rushOrderWrap.classList.add('hide');
     
-    $lastViableDate.textContent = lastViableDateToStartWork;
+    $lastViableDate.textContent = lastViableDateToStartWork.toDateString();
     const todayDate = today.getDate();
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
     $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
@@ -159,12 +159,3 @@ function getNumberOfDaysBetweenDates(fromDate, toDate) {
   const days = Math.ceil( ( toDateTime - fromDateTime  ) / oneDayMilliseconds ); 
   return days;
 }
-
-function getNumberOfDaysBetweenDates(fromDate, toDate) {
-  const fromDateTime = new Date(fromDate).getTime();
-  const toDateTime = new Date(toDate).getTime();
-  const oneDayMilliseconds = 1000 * 60 * 60 * 24;
-  const days = Math.ceil( ( toDateTime - fromDateTime  ) / oneDayMilliseconds ); 
-  return days;
-}
-
