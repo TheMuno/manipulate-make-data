@@ -117,6 +117,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
 
     let firstDaySet = false;
     const todayEpoch = today.getTime();
+    $dateOpeningsTextArea.value = '';
 
     for (const day of daysData) {
     // for (let i = 0; i < numberOfDays; i++) {
