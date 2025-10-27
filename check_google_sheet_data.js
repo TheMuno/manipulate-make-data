@@ -64,7 +64,7 @@ const $firstAvailableDateTasks = document.querySelector('.first-available-date-t
 const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
-const lowerLimitDaysNum = 10;
+const lowerLimitDaysNum = 15;
 const setMinHrs = 8; // hrs
 
 const fp = flatpickr($datePickerField, {
@@ -76,9 +76,15 @@ const fp = flatpickr($datePickerField, {
   	// minDate: 'today',
     onClose: (selectedDates, dateStr, instance) => {
       if (selectedDates.length === 0) return;
-      const minHrs = Number($minHrsInp.value.trim()) ? Number($minHrsInp.value.trim()) : undefined;
+      const minHrs = parseInt($minHrsInp.value.trim()) ? parseInt($minHrsInp.value.trim()) : undefined;
       checkForCapacityOnDatePickerClose(selectedDates, minHrs);         
     },
+});
+
+$minHrsInp.addEventListener('change', e => {
+  const hrs = parseInt(e.currentTarget.value.trim());
+  if (!hrs) return;
+
 });
 
 async function checkForCapacityOnDatePickerClose(dateArr, minHrs=setMinHrs) {
