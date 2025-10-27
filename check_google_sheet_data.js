@@ -128,16 +128,15 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
 
         const { booked, max, ['no. of tasks']:noOfTasks } = day;
 
-        if (firstDaySet === false) {
-            $firstAvailableDate.textContent = date;
-            $firstAvailableDateCapacity.textContent = capacity;
-            $firstAvailableDateBooked.textContent = booked;
-            $firstAvailableDateTasks.textContent = noOfTasks;
-            firstDaySet = true;
-        }
-
         const dayInfo = `${date} | ${capacity} capacity | ${booked} booked | ${noOfTasks} tasks`;
         $dateOpeningsTextArea.value = $dateOpeningsTextArea.value + '\n' + dayInfo; 
+
+        if (firstDaySet) continue;
+        $firstAvailableDate.textContent = date;
+        $firstAvailableDateCapacity.textContent = capacity;
+        $firstAvailableDateBooked.textContent = booked;
+        $firstAvailableDateTasks.textContent = noOfTasks;
+        firstDaySet = true;
     }
 }
 
