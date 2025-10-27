@@ -10,7 +10,7 @@ async function getSheetData() {
     const rows = data.values || [];
 
     if (rows.length < 2) {
-      console.warn("Not enough data rows found");
+      console.warn('Not enough data rows found');
       return [];
     }
 
@@ -19,7 +19,7 @@ async function getSheetData() {
 
     // 2️⃣ Filter out empty rows
     const filteredRows = bodyRows.filter(row =>
-      row.some(cell => cell && cell.toString().trim() !== "")
+      row.some(cell => cell && cell.toString().trim() !== '')
     );
 
     // 3️⃣ Map rows to objects using headers as keys
@@ -27,16 +27,16 @@ async function getSheetData() {
       const entry = {};
       header.forEach((key, index) => {
         key = key.toLowerCase();
-        entry[key] = row[index] || ""; // fallback to empty string if cell is missing
+        entry[key] = row[index] || ''; // fallback to empty string if cell is missing
       });
       return entry;
     });
 
-    console.log("Structured Data:", structuredData);
+    console.log('Structured Data:', structuredData);
     return structuredData;
 
   } catch (error) {
-    console.error("Error fetching Google Sheets data:", error);
+    console.error('Error fetching Google Sheets data:', error);
     return [];
   }
 }
@@ -121,12 +121,12 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
 
     for (const day of daysData) {
     // for (let i = 0; i < numberOfDays; i++) {
-        const { available, date } = day;
+        const { available, date, capacity } = day;
         if (!available || available.toLowerCase() !== 'true') continue;
         const dateEpoch  = new Date(date).getTime();
-        if (todayEpoch > dateEpoch) continue;
+        if (todayEpoch > dateEpoch && capacity < minHrs) continue;
 
-        const { booked, capacity, max, ['no. of tasks']:noOfTasks } = day;
+        const { booked, max, ['no. of tasks']:noOfTasks } = day;
 
         if (firstDaySet === false) {
             $firstAvailableDate.textContent = date;
