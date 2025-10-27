@@ -124,7 +124,7 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
         const { available, date, capacity } = day;
         if (!available || available.toLowerCase() !== 'true') continue;
         const dateEpoch  = new Date(date).getTime();
-        if (todayEpoch > dateEpoch && parseInt(capacity) < parseInt(minHrs)) continue;
+        if (todayEpoch > dateEpoch || parseInt(capacity) < parseInt(minHrs)) continue;
 
         const { booked, max, ['no. of tasks']:noOfTasks } = day;
 
