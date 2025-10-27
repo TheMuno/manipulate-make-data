@@ -50,12 +50,13 @@ document.querySelector('.log-data').addEventListener('click', e => {
 const $dateCreated = document.querySelector('.date-created');
 const $arrivalDate = document.querySelector('.arrival-date');
 const $datePickerField = document.querySelector('.date');
+const $minHrsInp = document.querySelector('.min-hrs-inp'); 
 const $rushOrderWrap = document.querySelector('.rush-order-wrap');
 const $normalOrderWrap = document.querySelector('.normal-order-wrap');
 const $lastViableDate = document.querySelector('.last-viable-date');
 const $dateRange = document.querySelector('.date-range');
 const $daysNum = document.querySelector('.days-num');
-const $minHrs = document.querySelector('.min-hrs');
+const $minHrsDisplay = document.querySelector('.min-hrs');
 const $firstAvailableDate = document.querySelector('.first-available-date'); 
 const $firstAvailableDateCapacity = document.querySelector('.first-available-date-capacity'); 
 const $firstAvailableDateBooked = document.querySelector('.first-available-date-booked'); 
@@ -64,7 +65,7 @@ const $dateOpeningsTextArea = document.querySelector('.date-openings');
 const today = new Date();
 const rushOrderWeeks = 3;
 const lowerLimitDaysNum = 10;
-const minHrs = 8; // hrs
+const setMinHrs = 8; // hrs
 
 const fp = flatpickr($datePickerField, {
     mode: 'range',
@@ -74,12 +75,13 @@ const fp = flatpickr($datePickerField, {
     dateFormat: 'Y-m-d',
   	// minDate: 'today',
     onClose: (selectedDates, dateStr, instance) => {
-        if (selectedDates.length === 0) return;
-        checkForCapacityOnDatePickerClose(selectedDates);         
+      if (selectedDates.length === 0) return;
+      const minHrs = Number($minHrsInp.value.trim()) ? Number($minHrsInp.value.trim()) : undefined;
+      checkForCapacityOnDatePickerClose(selectedDates, minHrs);         
     },
 });
 
-async function checkForCapacityOnDatePickerClose(dateArr) {
+async function checkForCapacityOnDatePickerClose(dateArr, minHrs=setMinHrs) {
     const arrivalDate = processArrivalDate(dateArr);
     $dateCreated.textContent = today.toDateString();
     $arrivalDate.textContent = arrivalDate;
@@ -103,13 +105,14 @@ async function checkForCapacityOnDatePickerClose(dateArr) {
     
     $normalOrderWrap.classList.remove('hide');
     $rushOrderWrap.classList.add('hide');
+    $minHrsInp.value = minHrs;
     
     $lastViableDate.textContent = lastViableDateToStartWork.toDateString();
     const todayDate = today.getDate();
     const tomorrow = new Date(new Date(today).setDate(todayDate + 1)).toDateString();
     $dateRange.textContent = `${tomorrow} (tomorrow) to ${lastViableDateToStartWork.toDateString()} (10 days to arrival date)`;
     $daysNum.textContent = `${numberOfDaysAvailableToWork} days to delivery`;
-    $minHrs.textContent = minHrs;
+    $minHrsDisplay.textContent = minHrs;
 
     const daysData = await getSheetData();
 
